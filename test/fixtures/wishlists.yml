@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  movie: one
+  notified: false
+  status: MyString
+
+two:
+  user: two
+  movie: two
+  notified: false
+  status: MyString

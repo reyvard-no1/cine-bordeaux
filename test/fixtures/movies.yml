@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  tmdb_id: 1
+  title: MyString
+  synopsis: MyText
+  poster_url: MyString
+  backdrop_url: MyString
+  release_date: 2026-02-04
+  genres: MyString
+  trailer_key: MyString
+  cached_data: MyText
+
+two:
+  tmdb_id: 1
+  title: MyString
+  synopsis: MyText
+  poster_url: MyString
+  backdrop_url: MyString
+  release_date: 2026-02-04
+  genres: MyString
+  trailer_key: MyString
+  cached_data: MyText
