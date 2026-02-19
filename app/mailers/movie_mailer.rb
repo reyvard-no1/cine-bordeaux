@@ -1,10 +1,9 @@
-class ApplicationMailer < ActionMailer::Base
+class MovieMailer < ApplicationMailer
   default from: 'notifications@cine-bordeaux.fr'
 
   def release_notification(user, movie)
     @user = user
     @movie = movie
-    @cinemas_count = Cinema.count
 
     mail(
       to: @user.email,
