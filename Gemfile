@@ -65,3 +65,5 @@ end
 gem "dotenv-rails", "~> 3.2"
 
 gem "devise", "~> 5.0"
+
+gem "tailwindcss-rails", "~> 4.4"

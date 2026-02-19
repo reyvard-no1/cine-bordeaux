@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   end
 
   # Wishlist
-  resources :wishlists, only: [:index, :create, :destroy]
+  resources :wishlists, only: [:index, :create, :update, :destroy]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

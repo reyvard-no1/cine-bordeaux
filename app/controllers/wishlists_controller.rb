@@ -29,7 +29,21 @@ class WishlistsController < ApplicationController
       redirect_to movie_path(@movie.tmdb_id), alert: @wishlist.errors.full_messages.join(', ')
     end
   end
+    def update
+  @wishlist = current_user.wishlists.find(params[:id])
 
+  if @wishlist.update(wishlist_params)
+    redirect_to wishlists_path, notice: "Statut mis à jour !"
+  else
+    redirect_to wishlists_path, alert: "Erreur lors de la mise à jour"
+  end
+end
+
+private
+
+  def wishlist_params
+   params.require(:wishlist).permit(:status)
+  end
   def destroy
     @wishlist = current_user.wishlists.find(params[:id])
     movie_title = @wishlist.movie.title

@@ -1,2 +1,132 @@
-<h1>Movies#show</h1>
-<p>Find me in app/views/movies/show.html.erb</p>
+<% if @movie_data.present? %>
+  <!-- Hero section avec backdrop -->
+  <div class="relative -mt-8 -mx-4 mb-8">
+    <% if @movie_data['backdrop_path'] %>
+      <div class="h-96 bg-cover bg-center relative" style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.8)), url('https://image.tmdb.org/t/p/original<%= @movie_data['backdrop_path'] %>')">
+    <% else %>
+      <div class="h-96 bg-gradient-to-br from-gray-800 to-gray-900 relative">
+    <% end %>
+      <div class="absolute bottom-0 left-0 right-0 p-8 container mx-auto">
+        <h1 class="text-5xl font-bold text-white mb-2"><%= @movie_data['title'] %></h1>
+        <div class="flex items-center gap-4 text-white">
+          <% if @movie_data['release_date'] %>
+            <span class="text-lg"><%= Date.parse(@movie_data['release_date']).year %></span>
+          <% end %>
+          <% if @movie_data['runtime'] %>
+            <span class="text-lg"><%= @movie_data['runtime'] %> min</span>
+          <% end %>
+          <% if @movie_data['vote_average'] %>
+            <span class="bg-yellow-500 px-3 py-1 rounded-full font-bold">
+              ⭐ <%= @movie_data['vote_average'].round(1) %>/10
+            </span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Colonne gauche - Affiche -->
+    <div class="lg:col-span-1">
+      <div class="sticky top-8">
+        <% if @movie_data['poster_path'] %>
+          <%= image_tag "https://image.tmdb.org/t/p/w500#{@movie_data['poster_path']}",
+              alt: @movie_data['title'],
+              class: "w-full rounded-lg shadow-2xl" %>
+        <% else %>
+         <div class="aspect-[2/3] bg-gray-300 rounded-lg flex items-center justify-center text-6xl max-w-sm mx-auto">
+          🎬
+         </div>
+        <% end %>
+
+        <!-- Bouton Wishlist -->
+        <% if user_signed_in? %>
+          <% if @in_wishlist %>
+            <%= button_to "✓ Dans ma wishlist", wishlist_path(@movie.wishlists.find_by(user: current_user)),
+                method: :delete,
+                class: "w-full mt-4 bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition",
+                data: { turbo_confirm: "Retirer de votre wishlist ?" } %>
+          <% else %>
+            <%= button_to "➕ Ajouter à ma wishlist", wishlists_path(tmdb_id: @movie_id),
+                method: :post,
+                class: "w-full mt-4 bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition" %>
+          <% end %>
+        <% else %>
+          <%= link_to "🔐 Connectez-vous pour ajouter", new_user_session_path,
+              class: "block w-full mt-4 bg-gray-500 text-white py-3 rounded-lg font-semibold text-center hover:bg-gray-600 transition" %>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Colonne droite - Infos -->
+    <div class="lg:col-span-2">
+      <!-- Synopsis -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">Synopsis</h2>
+        <p class="text-gray-700 leading-relaxed">
+          <%= @movie_data['overview'].presence || "Aucun synopsis disponible." %>
+        </p>
+      </div>
+
+      <!-- Genres -->
+      <% if @movie_data['genres'].present? %>
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+          <h2 class="text-2xl font-bold text-gray-900 mb-4">Genres</h2>
+          <div class="flex flex-wrap gap-2">
+            <% @movie_data['genres'].each do |genre| %>
+              <span class="bg-gray-200 px-4 py-2 rounded-full text-gray-700">
+                <%= genre['name'] %>
+              </span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Trailer -->
+      <% if @trailer_key %>
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+          <h2 class="text-2xl font-bold text-gray-900 mb-4">🎬 Bande-annonce</h2>
+          <div class="aspect-video">
+            <iframe
+              class="w-full h-full rounded-lg"
+              src="https://www.youtube.com/embed/<%= @trailer_key %>"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Casting (si disponible) -->
+      <% if @movie_data['credits'] && @movie_data['credits']['cast'].present? %>
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-2xl font-bold text-gray-900 mb-4">Casting</h2>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <% @movie_data['credits']['cast'].first(8).each do |actor| %>
+              <div class="text-center">
+                <% if actor['profile_path'] %>
+                  <%= image_tag "https://image.tmdb.org/t/p/w185#{actor['profile_path']}",
+                      alt: actor['name'],
+                      class: "w-full aspect-square object-cover rounded-lg mb-2" %>
+                <% else %>
+                  <div class="w-full aspect-square bg-gray-200 rounded-lg mb-2 flex items-center justify-center text-4xl">
+                    👤
+                  </div>
+                <% end %>
+                <p class="font-semibold text-sm"><%= actor['name'] %></p>
+                <p class="text-xs text-gray-500"><%= actor['character'] %></p>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+<% else %>
+  <div class="text-center py-12">
+    <p class="text-gray-500 text-xl">Film non trouvé</p>
+    <%= link_to "← Retour à l'accueil", root_path, class: "text-yellow-500 hover:text-yellow-600" %>
+  </div>
+<% end %>
