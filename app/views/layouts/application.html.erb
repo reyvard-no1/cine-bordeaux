@@ -27,7 +27,7 @@
             <%= link_to "Films Populaires", movies_path(filter: 'popular'), class: "hover:text-yellow-400 transition" %>
             <%= link_to "Prochaines Sorties", movies_path(filter: 'upcoming'), class: "hover:text-yellow-400 transition" %>
             <%= link_to "En Salle", movies_path(filter: 'now_playing'), class: "hover:text-yellow-400 transition" %>
-
+            <%= link_to "Cinémas Bordeaux", cinemas_path, class: "hover:text-yellow-400 transition" %>
             <% if user_signed_in? %>
               <%= link_to "Ma Wishlist", wishlists_path, class: "bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded-lg font-semibold transition" %>
               <%= link_to "Déconnexion", destroy_user_session_path, data: { turbo_method: :delete }, class: "hover:text-yellow-400 transition" %>

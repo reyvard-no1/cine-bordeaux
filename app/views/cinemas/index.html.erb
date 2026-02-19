@@ -1,0 +1,58 @@
+<div class="mb-8">
+  <h1 class="text-4xl font-bold text-gray-900 mb-2">🎪 Cinémas de Bordeaux</h1>
+  <p class="text-gray-600">Découvrez les salles de cinéma de la région bordelaise</p>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <% @cinemas.each do |cinema| %>
+    <%= link_to cinema_path(cinema), class: "block group" do %>
+      <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow p-6 h-full">
+        <!-- En-tête -->
+        <div class="flex items-start justify-between mb-4">
+          <div>
+            <h2 class="text-xl font-bold text-gray-900 group-hover:text-yellow-600 transition mb-1">
+              <%= cinema.name %>
+            </h2>
+            <p class="text-sm text-gray-500">
+              <%= cinema.city %> (<%= cinema.postal_code %>)
+            </p>
+          </div>
+          <span class="text-3xl">🎬</span>
+        </div>
+
+        <!-- Adresse -->
+        <div class="mb-4">
+          <p class="text-gray-700 text-sm flex items-start gap-2">
+            <span class="text-lg">📍</span>
+            <span><%= cinema.address %></span>
+          </p>
+        </div>
+
+        <!-- Description courte -->
+        <p class="text-gray-600 text-sm line-clamp-3 mb-4">
+          <%= cinema.description %>
+        </p>
+
+        <!-- Footer -->
+        <div class="flex items-center gap-4 text-sm text-gray-500 border-t pt-4">
+          <% if cinema.phone.present? %>
+            <span class="flex items-center gap-1">
+              📞 <%= cinema.phone %>
+            </span>
+          <% end %>
+          <% if cinema.website.present? %>
+            <span class="text-yellow-600 font-semibold group-hover:text-yellow-700">
+              Voir plus →
+            </span>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<% if @cinemas.empty? %>
+  <div class="text-center py-12 bg-white rounded-lg shadow-md">
+    <p class="text-gray-500 text-xl">Aucun cinéma trouvé</p>
+  </div>
+<% end %>
