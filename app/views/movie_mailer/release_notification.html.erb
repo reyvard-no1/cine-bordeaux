@@ -1,0 +1,22 @@
+code app/views/movie_mailer/release_notification.text.erb
+```
+```
+🎬 Bonne nouvelle <%= @user.name %> !
+
+Le film "<%= @movie.title %>" que vous aviez ajouté à votre wishlist est maintenant en salle !
+
+📅 Date de sortie : <%= @movie.release_date&.strftime("%d/%m/%Y") %>
+
+📝 Synopsis :
+<%= @movie.synopsis %>
+
+🎭 Genres : <%= @movie.genre_list.join(', ') %>
+
+👉 Voir les détails : <%= movie_url(@movie.tmdb_id) %>
+👉 Trouver un cinéma : http://localhost:3000/cinemas
+
+Bon film ! 🍿
+
+---
+Vous recevez cet email car vous avez ajouté ce film à votre wishlist sur Ciné Bordeaux.
+Gérer ma wishlist : http://localhost:3000/wishlists
